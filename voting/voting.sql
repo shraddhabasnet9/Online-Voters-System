@@ -186,7 +186,6 @@ ALTER TABLE `admin`
 --
 ALTER TABLE `candidate`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `symbol` (`symbol`),
   ADD UNIQUE KEY `unique_candidate_entry` (`cname`,`election_id`,`symbol`,`position`),
   ADD KEY `election_id` (`election_id`);
 
