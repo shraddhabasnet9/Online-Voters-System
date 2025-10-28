@@ -46,7 +46,7 @@ if (isset($_POST['register'])) {
         $idcard = "img/" . $count . $filename;
         move_uploaded_file($tempname, $idcard);
 
-        $query = "INSERT INTO register(name,address,idname,idnum,idcard,dob,gender,phone,email,status) VALUES('$name','$address','$idname','$idnum','$idcard','$dob','$gender','$phone','$email','not voted')";
+        $query = "INSERT INTO register(name,address,idname,idnum,idcard,dob,gender,phone,email,verify,status) VALUES('$name','$address','$idname','$idnum','$idcard','$dob','$gender','$phone','$email','no','not voted')";
         $data = mysqli_query($con, $query);
 
         if ($data) {

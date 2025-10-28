@@ -23,7 +23,10 @@ $val_query = "SELECT * FROM voting";
 $val_data = mysqli_query($con, $val_query);
 $val_result = mysqli_fetch_assoc($val_data);
 
-$voting_title = $val_result['voting_title'];
+$vote_title_id = $val_result['vote_title_id'];
+$title_query = mysqli_query($con, "SELECT voting_title FROM vote_title WHERE id='$vote_title_id'");
+$title_row = mysqli_fetch_assoc($title_query);
+$voting_title = $title_row['voting_title'];
 $vot_start_date = $val_result['vot_start_date'];
 $vot_end_date = $val_result['vot_end_date'];
 
@@ -61,23 +64,23 @@ if ($_SESSION['phone'] == null) {
     <div class="container">
         <div class="header">
             <span class="logo">Voting System</span>
-            <span class="profile" onclick="showProfile()"><img src="<?php echo $_SESSION['idcard']; ?>" alt=""><label><?php echo $_SESSION['fname'] . " " . $_SESSION['lname']; ?></label></span>
+            <span class="profile" onclick="showProfile()"><img src="<?php echo $_SESSION['idcard']; ?>" alt=""><label><?php echo $_SESSION['name'] ?></label></span>
         </div>
         <div id="profile-panel">
             <i class="fa-solid fa-circle-xmark" onclick="hidePanel()"></i>
             <div class="dp"><img src="<?php echo $_SESSION['idcard']; ?>" alt=""></div>
             <div class="info">
-                <h2><?php echo $_SESSION['fname'] . " " . $_SESSION['lname']; ?></h2>
+                <h2><?php echo $_SESSION['name'] ?></h2>
             </div>
             <div class="link"><a href="includes/user-logout.php" class="del"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></div>
         </div>
         <div class="main">
 
-            <h1 class="heading">Welcome <?php echo $_SESSION['fname']; ?>!</h1>
+            <h1 class="heading">Welcome <?php echo $_SESSION['name']; ?>!</h1>
             <h2 class="warning">Voting will start soon...</h2>
 
             <div class="box">
-                <h4 class="heading">Start Voting</h4>
+                <h4 class="heading" atyle="color: #000">Start Voting</h4>
                 <table>
                     <tr>
                         <td class="bold">Voting Title :</td>

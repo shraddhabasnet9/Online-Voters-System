@@ -10,8 +10,6 @@ if($_SESSION['phone']==null)
     include "includes/voter_login_data.php";
 }
 
-echo $_SESSION['otp'];
-
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +36,7 @@ echo $_SESSION['otp'];
         </div>
         <div class="form">
             <h4>OTP Verification</h4>
+            <p>Your OTP is : <?php echo $_SESSION['otp']; ?></p>
             <form action="voting-system.php" method="POST">
                 <label class="label">OTP:</label>
                 <input type="name" name="otp" class="input" placeholder="Enter OTP" required>
