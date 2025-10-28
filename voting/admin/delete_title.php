@@ -2,11 +2,11 @@
 
 $id = $_GET['id'];
 $con = mysqli_connect('localhost', 'root', '', 'voting');
-$query = "DELETE FROM voting WHERE id='$id'";
+$query = "DELETE FROM vote_title WHERE id='$id'";
 $data = mysqli_query($con, $query);
 
 if ($data) {
     echo "<script> 
-            alert('Schedule deleted!');
-    window.location.href='voting_schedule.php';</script>";
+            alert('title deleted!');
+    window.location.href='voting-title.php';</script>";
 }
