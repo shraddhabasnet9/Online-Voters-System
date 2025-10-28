@@ -54,9 +54,9 @@ if ($_SESSION['adminLogin'] != 1) {
             <div class="link"><a href="../includes/admin-logout.php" class="del"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></div>
         </div>
         <div id="main">
-            <div class="heading"><a href="../registration.php" class="add-btn" onclick="showForm()">+ Add</a>
+            <!-- <div class="heading"><a href="../registration.php" class="add-btn" onclick="showForm()">+ Add</a>
                 <h2>Voters Information</h2>
-            </div>
+            </div> -->
             <div class="heading">
                 <h2 style="background:royalblue;">Verified Voters</h2>
             </div>

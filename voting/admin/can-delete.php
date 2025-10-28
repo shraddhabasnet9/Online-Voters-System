@@ -1,15 +1,13 @@
 <?php
-$id=$_GET['id'];;
+$id = $_GET['id'];;
 
-$con=mysqli_connect('localhost','root','','voting');
-$query="DELETE FROM candidate WHERE id='$id'";
-$data=mysqli_query($con,$query);
+$con = mysqli_connect('localhost', 'root', '', 'voting');
+$query = "DELETE FROM candidate WHERE id='$id'";
+$data = mysqli_query($con, $query);
 
-if($data)
-{
+if ($data) {
     echo "<script>
             alert('candidate deleted!')
-            history.back()
+            window.location.href='candidates.php';
          </script>";
 }
-?>

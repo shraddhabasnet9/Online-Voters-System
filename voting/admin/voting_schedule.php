@@ -1,4 +1,9 @@
 <?php
+session_start();
+if ($_SESSION['adminLogin'] != 1) {
+    header("location:index.php");
+    exit();
+}
 $con = mysqli_connect("localhost", "root", "", "voting");
 if (!$con) die("Database connection failed: " . mysqli_connect_error());
 
@@ -38,6 +43,7 @@ $schedules = mysqli_query($con, "
     <meta charset="UTF-8">
     <title>Voting Schedule</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/all.min.css">
     <style>
         table {
             width: 100%;
@@ -65,6 +71,22 @@ $schedules = mysqli_query($con, "
 
 <body>
     <div class="container">
+        <div class="header">
+            <span class="menu-bar" id="show" onclick="showMenu()">&#9776;</span>
+            <span class="menu-bar" id="hide" onclick="hideMenu()">&#9776;</span>
+            <span class="logo">Voting System</span>
+            <span class="profile" onclick="showProfile()"><img src="../res/user3.jpg" alt=""><label for=""><?php echo $_SESSION['name']; ?></label></span>
+        </div>
+        <div id="profile-panel">
+            <i class="fa-solid fa-circle-xmark" onclick="hidePanel()"></i>
+            <div class="dp"><img src="../res/user3.jpg" alt=""></div>
+            <div class="info">
+                <h2><?php echo $_SESSION['name']; ?></h2>
+                <h5>Admin</h5>
+            </div>
+            <div class="link"><a href="../includes/admin-logout.php" class="del"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></div>
+        </div>
+        <?php include '../includes/menu.php'; ?>
         <div class="heading">
             <h1>Online Voting System</h1>
         </div>
@@ -116,6 +138,7 @@ $schedules = mysqli_query($con, "
             </tbody>
         </table>
     </div>
+    <script src="../js/script.js"></script>
 </body>
 
 </html>

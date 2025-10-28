@@ -2,6 +2,7 @@
 session_start();
 if ($_SESSION['adminLogin'] != 1) {
     header("location:index.php");
+    exit();
 }
 ?>
 
@@ -12,51 +13,68 @@ if ($_SESSION['adminLogin'] != 1) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Voting System</title>
+    <title>Online Voting System - Voting Titles</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/all.min.css">
+    <style>
+        .table td,
+        th {
+            height: 2rem;
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <form action="" method="POST" enctype="multipart/form-data">
-            <div class="heading">
-                <h1>Online Voting System</h1>
+        <div class="header">
+            <span class="menu-bar" id="show" onclick="showMenu()">&#9776;</span>
+            <span class="menu-bar" id="hide" onclick="hideMenu()">&#9776;</span>
+            <span class="logo">Voting System</span>
+            <span class="profile" onclick="showProfile()"><img src="../res/user3.jpg" alt=""><label for=""><?php echo $_SESSION['name']; ?></label></span>
+        </div>
+        <div id="profile-panel">
+            <i class="fa-solid fa-circle-xmark" onclick="hidePanel()"></i>
+            <div class="dp"><img src="../res/user3.jpg" alt=""></div>
+            <div class="info">
+                <h2><?php echo $_SESSION['name']; ?></h2>
+                <h5>Admin</h5>
             </div>
-            <div class="form">
-                <h4>Title for Voting</h4>
-                <label class="label">Title:</label>
-                <input type="text" name="title" id="" class="input" placeholder="Enter voting title" required>
+            <div class="link"><a href="../includes/admin-logout.php" class="del"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></div>
+        </div>
+        <?php include '../includes/menu.php'; ?>
+        <div id="main">
+            <div class="heading"><a href="add_title.php" class="add-btn" onclick="showForm()">+ Add</a><br>
+                <h2>Voting titles</h2>
+                <table class="table">
+                    <thead>
+                        <th>Titles</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        <?php
 
-                <button class="button" name="set">Set</button>
+                        include "../includes/all-select-data.php";
+
+                        while ($result = mysqli_fetch_assoc($vote_data)) {
+                            echo "<tr>
+                        <td>" . $result['voting_title'] . "</td>
+                        <td><a href='edit_title.php?voting_title=$result[voting_title]&id=$result[id]'' class='edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a>
+                        <a href='delete_title.php?id=$result[id]' class='del' onClick='return delconfirm()'><i class='fa-solid fa-trash-can'></i> Delete</a></td>
+                        </tr>";
+                        }
+
+                        ?>
+                    </tbody>
+                </table>
             </div>
-        </form>
-        </form>
-    </div>
+        </div>
+        <script src="../js/script.js"></script>
+        <script>
+            function delconfirm() {
+                return confirm('Delete this title?');
+            }
+        </script>
 </body>
 
 </html>
-
-<?php
-
-if (isset($_POST['set'])) {
-    $con = mysqli_connect("localhost", "root", "", "voting");
-    $vote_title = mysqli_real_escape_string($con, $_POST['title']);
-
-    // Check if title already exists
-    $check_query = "SELECT * FROM vote_title WHERE voting_title='$vote_title'";
-    $result = mysqli_query($con, $check_query);
-
-    if (mysqli_num_rows($result) > 0) {
-        echo "<script>alert('Voting title already exists!')</script>";
-    } else {
-        // Insert new title
-        $insert_query = "INSERT INTO vote_title(voting_title) VALUES('$vote_title')";
-        if (mysqli_query($con, $insert_query)) {
-            echo "<script>alert('Title set successfully!')</script>";
-        } else {
-            echo "<script>alert('Error: " . mysqli_error($con) . "')</script>";
-        }
-    }
-}
-
-?>

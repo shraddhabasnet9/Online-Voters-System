@@ -1,5 +1,5 @@
 <?php
-$psnm = $_GET['psnm'];
+$voting_title = $_GET['voting_title'];
 $id = $_GET['id'];
 ?>
 
@@ -21,10 +21,11 @@ $id = $_GET['id'];
         </div>
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="form">
-                <h4>Candidate Position Update</h4>
+                <h4>Voting Title Update</h4>
 
-                <label class="label">Candidate Position:</label>
-                <input type="text" name="position" class="input" value="<?php echo $psnm; ?>" required>
+                <label class="label">Voting Title:</label>
+                <input type="text" name="voting_title" class="input"
+                    value="<?php echo htmlspecialchars($voting_title); ?>" required>
 
                 <button class="button" name="update">Update</button>
             </div>
@@ -33,40 +34,41 @@ $id = $_GET['id'];
 
     <?php
     if (isset($_POST['update'])) {
-        $position = trim($_POST['position']);
+        $voting_title = trim($_POST['voting_title']);
         $con = mysqli_connect("localhost", "root", "", "voting");
 
         if (!$con) {
             die("Database connection failed: " . mysqli_connect_error());
         }
 
-        // 🔍 Check if same position already exists (excluding the current record)
-        $check = "SELECT * FROM can_position WHERE position_name = '$position' AND id != '$id'";
+        // 🔍 Check if same voting title already exists (excluding the current one)
+        $check = "SELECT * FROM vote_title WHERE voting_title = '$voting_title' AND id != '$id'";
         $check_run = mysqli_query($con, $check);
 
         if (mysqli_num_rows($check_run) > 0) {
             echo "
             <script>
-                alert('This position name already exists! Please choose another.');
-                location.href='position.php';
+                alert('This voting title already exists! Please use another title.');
+                location.href='voting-title.php';
             </script>
         ";
         } else {
-            // ✅ Update since no duplicate found
-            $query = "UPDATE can_position SET position_name = '$position' WHERE id = '$id'";
+            // ✅ Proceed with update if no duplicate found
+            $query = "UPDATE vote_title SET voting_title = '$voting_title' WHERE id = '$id'";
             $data = mysqli_query($con, $query);
 
             if ($data) {
                 echo "
                 <script>
-                    alert('Position updated successfully!');
-                    location.href='position.php';
+                    alert('Voting title updated successfully!');
+                    location.href='voting-title.php';
                 </script>
             ";
             } else {
                 echo "
                 <script>
-                    alert('Error updating position.');
+                    alert('Error updating voting title.');
+                    location.href='voting-title.php';
                 </script>
             ";
             }
