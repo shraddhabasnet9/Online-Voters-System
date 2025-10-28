@@ -1,0 +1,1 @@
+<a href='user-update.php?fn=$result[fname]&ln=$result[lname]&idno=$result[idnum]&ph=$result[phone]&ad=$result[address]' class='edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a>
