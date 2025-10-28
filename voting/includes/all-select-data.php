@@ -1,6 +1,11 @@
 <?php
+<<<<<<< HEAD
 error_reporting(0);
 $con = mysqli_connect("localhost", "root", "", "voting");
+=======
+// error_reporting(0);
+$con = mysqli_connect("localhost","root","","voting");
+>>>>>>> 2d8b5f8169caaef785bb73ed3f4d65dd61a85bfe
 
 // candidate data
 $can_query = "SELECT * FROM candidate";
