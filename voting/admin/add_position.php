@@ -1,13 +1,13 @@
 <?php
 session_start();
-if($_SESSION['adminLogin']!=1)
-{
+if ($_SESSION['adminLogin'] != 1) {
     header("location:index.php");
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,9 +15,12 @@ if($_SESSION['adminLogin']!=1)
     <title>Online Voting System</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
-   <div class="container">
-        <div class="heading"><h1>Online Voting System</h1></div>
+    <div class="container">
+        <div class="heading">
+            <h1>Online Voting System</h1>
+        </div>
         <div class="form">
             <h4>Add Positions</h4>
             <form action="" method="POST">
@@ -27,36 +30,33 @@ if($_SESSION['adminLogin']!=1)
                 <button class="button" name="add">Add</button>
             </form>
         </div>
-   </div>
+    </div>
 </body>
+
 </html>
 
 <?php
-    $con=mysqli_connect("localhost","root","","voting");
+$con = mysqli_connect("localhost", "root", "", "voting");
 
-    if(isset($_POST['add']))
-    {
+if (isset($_POST['add'])) {
 
-        $pos_name=$_POST['position'];
-        echo $pos_name;
-        $query="INSERT INTO can_position (position_name) VALUES ('$pos_name')";
-        $data=mysqli_query($con,$query);
+    $pos_name = $_POST['position'];
+    echo $pos_name;
+    $query = "INSERT INTO can_position (position_name) VALUES ('$pos_name')";
+    $data = mysqli_query($con, $query);
 
-        if($data)
-        {
-            echo "
+    if ($data) {
+        echo "
             <script>
                 alert('position added successfully')
-                location.href='position.php'
+                window.location.href='position.php'
             </script>";
-        }
-        else
-        {
-            echo "
+    } else {
+        echo "
             <script>
                 alert('position already added !')
                 history.back()
             </script>";
-        }
     }
+}
 ?>

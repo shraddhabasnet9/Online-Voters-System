@@ -1,15 +1,14 @@
 <?php
-$con=mysqli_connect("localhost","root","","voting");
+$con = mysqli_connect("localhost", "root", "", "voting");
 
-$vid=$_GET['vid'];
+$vid = $_GET['vid'];
 
-$query="UPDATE register SET verify='yes' where id='$vid'";
+$query = "UPDATE register SET verify='yes' where id='$vid'";
 
-$data=mysqli_query($con,$query);
+$data = mysqli_query($con, $query);
 
-if($data)
-{
-    echo "<script> history.back() </script>";
+if ($data) {
+    echo "<script> 
+    alert('Voter Verified');
+    window.location.href = 'voters.php'; </script>";
 }
-
-?>
