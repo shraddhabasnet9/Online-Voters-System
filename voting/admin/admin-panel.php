@@ -1,23 +1,23 @@
 <?php
 
-    error_reporting(0);
-    session_start();
-    include "../includes/all-select-data.php";
+error_reporting(0);
+session_start();
+include "../includes/all-select-data.php";
 
-    if($_SESSION['adminLogin']!=1)
-    {
-        header("location:index.php");
-    }
+if ($_SESSION['adminLogin'] != 1) {
+    header("location:index.php");
+}
 
-    $voter_voted_query="SELECT * FROM register WHERE status='voted'";
-    $voter_voted_data=mysqli_query($con,$voter_voted_query);
-    
-    $voter_voted=mysqli_num_rows($voter_voted_data);
+$voter_voted_query = "SELECT * FROM register WHERE status='voted'";
+$voter_voted_data = mysqli_query($con, $voter_voted_query);
+
+$voter_voted = mysqli_num_rows($voter_voted_data);
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="../css/all.min.css">
     <script src="../js/chart.js"></script>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -59,35 +60,35 @@
             <div class="info-box" id="box3">
                 <h1><?php echo $_SESSION["total_position"]; ?></h1>
                 <h3>No Of Position</h3>
-                <a href="position.php">More Info <i class="fa-solid fa-circle-arrow-right"></i></a>   
+                <a href="position.php">More Info <i class="fa-solid fa-circle-arrow-right"></i></a>
             </div>
             <div class="info-box" id="box4">
                 <h1><?php echo $voter_voted; ?></h1>
                 <h3>Voters Voted</h3>
-                <a href="#">More Info <i class="fa-solid fa-circle-arrow-right"></i></a>
+                <a href="voters_voted.php">More Info <i class="fa-solid fa-circle-arrow-right"></i></a>
             </div>
             <div class="result-box">
                 <h2 class="result-title">Voting Tally</h2>
                 <?php
-                    $i=0;
-                    while($i<$total_pos)
-                    {
-                        echo '
+                $i = 0;
+                while ($i < $total_pos) {
+                    echo '
                         <div class="result"><canvas class="myChart"></canvas></div>
                         ';
-                        $i++;
-                    }
+                    $i++;
+                }
                 ?>
             </div>
-            </div>
         </div>
+    </div>
     <script>
         var ctx = [];
         var myChart = [];
         <?php
-            include "../includes/candidate_result.php";
+        include "../includes/candidate_result.php";
         ?>
- </script>
-<script src="../js/script.js"></script>
+    </script>
+    <script src="../js/script.js"></script>
 </body>
+
 </html>

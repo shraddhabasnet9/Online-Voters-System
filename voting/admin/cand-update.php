@@ -86,7 +86,6 @@ $can_data = mysqli_fetch_assoc($can_query);
                     ?>
                 </select>
 
-
                 <button class="button" name="update">Update Candidate</button>
             </div>
         </form>
@@ -94,26 +93,54 @@ $can_data = mysqli_fetch_assoc($can_query);
 
     <?php
     if (isset($_POST['update'])) {
-        $cname = mysqli_real_escape_string($con, $_POST['cname']);
+        $cname = mysqli_real_escape_string($con, trim($_POST['cname']));
         $election_id = mysqli_real_escape_string($con, $_POST['election_id']);
-        $symbol = mysqli_real_escape_string($con, $_POST['symbol']);
+        $symbol = mysqli_real_escape_string($con, trim($_POST['symbol']));
         $position = mysqli_real_escape_string($con, $_POST['position']);
 
-        // Update candidate in database
-        $update_query = "
-        UPDATE candidate 
-        SET cname='$cname', symbol='$symbol', position='$position', election_id='$election_id'
-        WHERE cname='$cn' AND symbol='$sy' AND position='$ps'
-    ";
+        // --- STEP 1: Check for duplicate candidate ---
+        $dup_check = mysqli_query($con, "
+            SELECT * FROM candidate 
+            WHERE cname='$cname' 
+              AND election_id='$election_id' 
+              AND symbol='$symbol' 
+              AND position='$position'
+              AND NOT (cname='$cn' AND symbol='$sy' AND position='$ps')
+        ");
 
-        $data = mysqli_query($con, $update_query);
-        if ($data) {
+        if (mysqli_num_rows($dup_check) > 0) {
+            echo "<script>alert('Duplicate entry! Same candidate, party, election, and position already exist.');</script>";
+            exit();
+        }
+
+        // --- STEP 2: Check for same party reuse in same election + position ---
+        $party_check = mysqli_query($con, "
+            SELECT * FROM candidate 
+            WHERE symbol='$symbol' 
+              AND election_id='$election_id' 
+              AND position='$position'
+              AND NOT (cname='$cn' AND symbol='$sy' AND position='$ps')
+        ");
+
+        if (mysqli_num_rows($party_check) > 0) {
+            echo "<script>alert('This party already has a candidate for this position in this election.');</script>";
+            exit();
+        }
+
+        // --- STEP 3: Proceed with update ---
+        $update_query = "
+            UPDATE candidate 
+            SET cname='$cname', symbol='$symbol', position='$position', election_id='$election_id'
+            WHERE cname='$cn' AND symbol='$sy' AND position='$ps'
+        ";
+
+        if (mysqli_query($con, $update_query)) {
             echo "<script>
                 alert('Candidate updated successfully!');
                 window.location.href='candidates.php';
-              </script>";
+            </script>";
         } else {
-            echo "<script>alert('Error: " . mysqli_error($con) . "');</script>";
+            echo "<script>alert('Error updating record: " . mysqli_error($con) . "');</script>";
         }
     }
     ?>
